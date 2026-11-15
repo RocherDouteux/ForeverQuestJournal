@@ -6,7 +6,8 @@ Open with /fqj, /questjournal, the AddOn Compartment, or the draggable
 minimap button.
 
 Features
-- DungeonJournal-inspired zone cards and selected-zone page hierarchy.
+- DungeonJournal-inspired zone cards ordered by average quest level and a
+  selected-zone page hierarchy.
 - Searchable two-column browser for every populated outdoor and city zone.
 - Search remains available inside a zone and filters that zone's quests.
 - Zone-level summaries use the mean and median relevant quest levels instead

@@ -9,13 +9,14 @@ local ICONS = {
     rewards = ICON_PATH .. "Rewards",
     next = ICON_PATH .. "NextChain",
     active = ICON_PATH .. "ActiveQuest",
+    map = ICON_PATH .. "Map",
 }
 
 local TEXT = {
     enUS = {
         search = "Search for Zones, Quests...", zones = "Zones", quests = "Quests", map = "Map",
         unfinished = "Unfinished", completed = "Finished", status_unfinished = "UNFINISHED", status_active = "IN QUEST LOG", status_completed = "FINISHED",
-        locked = "LOCKED", questLevel = "Quest level %d  -  Requires level %d", giver = "Quest giver",
+        locked = "LOCKED", questLevel = "Quest level %d  -  Requires level %d", giver = "QUEST GIVER",
         starts = "Starts from", item = "Starts from item", unknown = "Quest start: Unknown",
         objective = "OBJECTIVE", prerequisites = "PREREQUISITES", none = "None", any = "Complete any one of:",
         next = "NEXT IN CHAIN", rewards = "POSSIBLE REWARDS", showMap = "Show Start on Map", level = "Lv %d", zoneLevel = "LV AVG %s  ·  MED %s", range = "LV %d-%d",
@@ -25,7 +26,7 @@ local TEXT = {
     frFR = {
         search = "Rechercher une zone ou une quête...", zones = "Zones", quests = "Quêtes", map = "Carte",
         unfinished = "Inachevées", completed = "Terminées", status_unfinished = "INACHEVÉE", status_active = "DANS LE JOURNAL", status_completed = "TERMINÉE",
-        locked = "VERROUILLÉE", questLevel = "Niveau %d  -  Niveau requis %d", giver = "Donneur de quête",
+        locked = "VERROUILLÉE", questLevel = "Niveau %d  -  Niveau requis %d", giver = "DONNEUR DE QUÊTE",
         starts = "Commence auprès de", item = "Objet de départ", unknown = "Départ de quête : inconnu",
         objective = "OBJECTIF", prerequisites = "PRÉREQUIS", none = "Aucun", any = "Terminez l'une de ces quêtes :",
         next = "SUITE DE LA CHAÎNE", rewards = "RÉCOMPENSES POSSIBLES", showMap = "Voir le départ sur la carte", level = "Niv. %d", zoneLevel = "NIV. MOY. %s  ·  MÉD. %s", range = "NIV. %d-%d",
@@ -84,12 +85,6 @@ local function CreateFlatButton(parent,width,height,variant)
 end
 local function ZoneName(zone) return Localized(zone, "name") end
 local function QuestName(quest) return Localized(quest, "name") end
-local function SortedZones()
-    local result = {}
-    for _, zone in pairs(FQJ.Zones) do if zone.key and zone.quests and next(zone.quests) then table.insert(result, zone) end end
-    table.sort(result, function(a,b) if a.continent ~= b.continent then return a.continent < b.continent end return ZoneName(a) < ZoneName(b) end)
-    return result
-end
 local function ZoneStats(zone)
     local totals = { completed=0, active=0, unstarted=0, meanLevel=1, medianLevel=1, minLevel=1, maxLevel=1 }
     local levels,levelSum = {},0
@@ -109,6 +104,21 @@ local function ZoneStats(zone)
         else totals.medianLevel=(levels[middle]+levels[middle+1])/2 end
     end
     return totals
+end
+local function SortedZones()
+    local result,averages = {},{}
+    for _,zone in pairs(FQJ.Zones) do
+        if zone.key and zone.quests and next(zone.quests) then
+            table.insert(result,zone); averages[zone]=ZoneStats(zone).meanLevel
+        end
+    end
+    table.sort(result,function(a,b)
+        if a.continent~=b.continent then return a.continent<b.continent end
+        local averageA,averageB=averages[a],averages[b]
+        if averageA~=averageB then return averageA<averageB end
+        return ZoneName(a)<ZoneName(b)
+    end)
+    return result
 end
 local function LevelNumber(value)
     return tostring(math.floor((value or 0)+0.5))
@@ -299,7 +309,7 @@ end
 local function AcquireRow(parent,index)
     if rows[index] then return rows[index] end
     local row=CreateFrame("Button",nil,parent,"BackdropTemplate"); row:SetSize(292,44); Backdrop(row); row:SetBackdropColor(0.12,0.08,0.04,0.90); row:SetBackdropBorderColor(0.42,0.29,0.12,1)
-    row.name=Font(row,12,{0.95,0.82,0.55}); row.name:SetPoint("TOPLEFT",10,-7); row.name:SetPoint("RIGHT",-48,0); row.name:SetWordWrap(false)
+    row.name=Font(row,12,{0.95,0.82,0.55}); row.name:SetPoint("TOPLEFT",10,-7); row.name:SetPoint("RIGHT",-52,0); row.name:SetWordWrap(false)
     row.level=Font(row,11,{0.72,0.62,0.42},"RIGHT"); row.level:SetPoint("TOPRIGHT",-8,-7)
     row.state=Font(row,9,{0.78,0.78,0.78}); row.state:SetPoint("BOTTOMLEFT",10,7)
     row.activeIcon=row:CreateTexture(nil,"ARTWORK"); row.activeIcon:SetSize(16,16); row.activeIcon:SetPoint("BOTTOMRIGHT",-7,4); row.activeIcon:SetTexture(ICONS.active); row.activeIcon:SetTexCoord(0,1,0,1); row.activeIcon:Hide()
@@ -393,7 +403,7 @@ function FQJ.CreateUI()
     frame.questsTab=CreateFlatButton(header,108,30); frame.questsTab:SetPoint("TOPRIGHT",-13,-14); frame.questsTab:SetSelected(true); frame.questsTab:Disable()
     frame.mapTab=CreateFlatButton(header,108,30,"primary"); frame.mapTab:SetPoint("TOPRIGHT",-127,-14)
     local mapBadge=CreateFrame("Frame",nil,frame.mapTab,"BackdropTemplate"); mapBadge:SetSize(28,20); mapBadge:SetPoint("LEFT",5,0); mapBadge:SetBackdrop({bgFile="Interface\\Buttons\\WHITE8X8",edgeFile="Interface\\Buttons\\WHITE8X8",edgeSize=1}); mapBadge:SetBackdropColor(0.20,0.145,0.055,1); mapBadge:SetBackdropBorderColor(0.58,0.41,0.13,1)
-    local mapIcon=mapBadge:CreateTexture(nil,"OVERLAY"); mapIcon:SetSize(17,17); mapIcon:SetPoint("CENTER",0,0); mapIcon:SetTexture("Interface\\Icons\\INV_Misc_Map_01"); mapIcon:SetTexCoord(0.08,0.92,0.08,0.92)
+    local mapIcon=mapBadge:CreateTexture(nil,"OVERLAY"); mapIcon:SetSize(19,19); mapIcon:SetPoint("CENTER",0,0); mapIcon:SetTexture(ICONS.map); mapIcon:SetTexCoord(0,1,0,1)
     frame.mapTab.label:ClearAllPoints(); frame.mapTab.label:SetPoint("CENTER",13,0)
     frame.mapTab:SetScript("OnClick",function() local zone=ActiveZone(); if FQJ.YieldToNewWindow then FQJ.YieldToNewWindow() end; if C_Map and C_Map.OpenWorldMap then C_Map.OpenWorldMap(zone.uiMapID) elseif ToggleWorldMap then ToggleWorldMap() end end)
     local listPanel=CreateFrame("Frame",nil,content,"BackdropTemplate"); listPanel:SetPoint("TOPLEFT",14,-84); listPanel:SetPoint("BOTTOMLEFT",14,14); listPanel:SetWidth(344); Backdrop(listPanel); listPanel:SetBackdropColor(0.19,0.13,0.07,0.94); listPanel:SetBackdropBorderColor(0.39,0.24,0.08,1)
@@ -410,7 +420,7 @@ function FQJ.CreateUI()
     local detail=CreateFrame("Frame",nil,content,"BackdropTemplate"); detail:SetPoint("TOPLEFT",listPanel,"TOPRIGHT",12,0); detail:SetPoint("BOTTOMRIGHT",-14,14); Backdrop(detail); detail:SetBackdropColor(0.21,0.15,0.08,0.94); detail:SetBackdropBorderColor(0.42,0.27,0.10,1)
     local inset=CreateFrame("Frame",nil,detail,"BackdropTemplate"); inset:SetPoint("TOPLEFT",8,-8); inset:SetPoint("BOTTOMRIGHT",-14,8); inset:SetBackdrop({bgFile="Interface\\Buttons\\WHITE8X8",edgeFile="Interface\\Tooltips\\UI-Tooltip-Border",edgeSize=10,insets={left=3,right=3,top=3,bottom=3}}); inset:SetBackdropColor(0.19,0.13,0.07,0.98); inset:SetBackdropBorderColor(0.36,0.23,0.09,1)
     local questIcon=inset:CreateTexture(nil,"ARTWORK"); questIcon:SetSize(42,42); questIcon:SetPoint("TOPLEFT",14,-12); questIcon:SetTexture(ICONS.giver); questIcon:SetTexCoord(0,1,0,1); detail.questIcon=questIcon
-    detail.title=Font(inset,18,{1.00,0.80,0.28}); detail.title:SetPoint("TOPLEFT",66,-14); detail.title:SetPoint("RIGHT",-112,0); detail.title:SetShadowColor(0,0,0,0.9); detail.title:SetShadowOffset(1,-1)
+    detail.title=Font(inset,18,{1.00,0.80,0.28}); detail.title:SetPoint("TOPLEFT",66,-14); detail.title:SetPoint("RIGHT",-112,0); detail.title:SetWordWrap(false); detail.title:SetShadowColor(0,0,0,0.9); detail.title:SetShadowOffset(1,-1)
     detail.level=Font(inset,11,{0.84,0.76,0.62}); detail.level:SetPoint("TOPLEFT",detail.title,"BOTTOMLEFT",0,-5); detail.status=Font(inset,10,{0.84,0.76,0.62},"RIGHT"); detail.status:SetPoint("TOPRIGHT",-16,-18)
     local divider=inset:CreateTexture(nil,"ARTWORK"); divider:SetColorTexture(0.49,0.31,0.10,0.9); divider:SetPoint("TOPLEFT",14,-66); divider:SetPoint("TOPRIGHT",-14,-66); divider:SetHeight(1)
     detail.scrollFrame=CreateFrame("ScrollFrame",nil,inset); detail.scrollFrame:SetPoint("TOPLEFT",16,-78); detail.scrollFrame:SetPoint("BOTTOMRIGHT",-28,54); detail.scrollFrame:EnableMouseWheel(true); detail.scrollFrame:SetScript("OnMouseWheel",function(self,delta) self:SetVerticalScroll(math.max(0,math.min(self:GetVerticalScroll()-(delta*34),self:GetVerticalScrollRange()))) end)

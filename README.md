@@ -5,7 +5,7 @@ to sit naturally beside Forever Dungeon Journal.
 
 ## Features
 
-- Browse quests by zone through a two-column landscape gallery.
+- Browse quests by zone through a two-column landscape gallery ordered by average quest level.
 - English and French interface and quest content.
 - Per-character Finished and Unfinished tracking.
 - A distinct in-quest-log marker for quests the current character has accepted.
