@@ -1,4 +1,4 @@
-Forever Quest Journal 1.3.0
+Forever Quest Journal 1.4.0
 
 Complete English/French zone browser for WoW Forever.
 
@@ -17,9 +17,13 @@ Features
 - Compact flat language selector with clear English/French menu rows.
 - Unified flat button styling for zone navigation, tabs, filters, and map
   actions, with consistent hover, selected, pressed, and disabled states.
-- Per-character Finished and Unfinished states.
+- Per-character Finished and Unfinished states, with accepted quests clearly
+  marked as "In Quest Log" inside the Unfinished view.
 - Required quest chains and alternative prerequisites.
+- Possible item rewards with localized names and in-game item tooltips.
 - Quest-giver, object, and item start information.
+- A cohesive custom icon set for quest details, rewards, chains, and active
+  quests.
 - "Show Start on Map" creates a user waypoint in the quest's actual starting
   zone whenever a coordinate is known.
 - Forever Quest Journal and Dungeon Journal can remain open together; the

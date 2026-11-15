@@ -2,7 +2,7 @@ local ADDON_NAME, FQJ = ...
 _G.ForeverQuestJournal_NS = FQJ
 
 FQJ.ADDON_NAME = ADDON_NAME
-FQJ.VERSION = "1.3.0"
+FQJ.VERSION = "1.4.0"
 FQJ.Zones = FQJ.Zones or {}
 FQJ.MEDIA = "Interface\\AddOns\\ForeverQuestJournal\\Media\\"
 
@@ -80,7 +80,13 @@ function FQJ.BringToFront()
 end
 
 function FQJ.Toggle()
-    if not FQJ.Frame then FQJ.CreateUI() end
+    if not FQJ.Frame then
+        FQJ.CreateUI()
+        FQJ.Frame:Show()
+        FQJ.BringToFront()
+        FQJ.ShowHome()
+        return
+    end
     if FQJ.Frame:IsShown() then
         if FQJ.Frame:GetFrameStrata() ~= "TOOLTIP" then FQJ.BringToFront()
         else FQJ.Frame:Hide() end

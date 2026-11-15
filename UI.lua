@@ -1,25 +1,34 @@
 local _, FQJ = ...
 
-local COLORS = { completed = { 0.22, 0.72, 0.30 }, unfinished = { 0.86, 0.78, 0.62 } }
+local COLORS = { completed = { 0.22, 0.72, 0.30 }, active = { 0.28, 0.70, 1.00 }, unfinished = { 0.86, 0.78, 0.62 } }
+local ICON_PATH = "Interface\\AddOns\\ForeverQuestJournal\\Media\\Icons\\"
+local ICONS = {
+    giver = ICON_PATH .. "QuestGiver",
+    objective = ICON_PATH .. "Objective",
+    prerequisites = ICON_PATH .. "Prerequisites",
+    rewards = ICON_PATH .. "Rewards",
+    next = ICON_PATH .. "NextChain",
+    active = ICON_PATH .. "ActiveQuest",
+}
 
 local TEXT = {
     enUS = {
         search = "Search for Zones, Quests...", zones = "Zones", quests = "Quests", map = "Map",
-        unfinished = "Unfinished", completed = "Finished", status_unfinished = "UNFINISHED", status_completed = "FINISHED",
+        unfinished = "Unfinished", completed = "Finished", status_unfinished = "UNFINISHED", status_active = "IN QUEST LOG", status_completed = "FINISHED",
         locked = "LOCKED", questLevel = "Quest level %d  -  Requires level %d", giver = "Quest giver",
         starts = "Starts from", item = "Starts from item", unknown = "Quest start: Unknown",
         objective = "OBJECTIVE", prerequisites = "PREREQUISITES", none = "None", any = "Complete any one of:",
-        next = "NEXT IN CHAIN", showMap = "Show Start on Map", level = "Lv %d", zoneLevel = "LV AVG %s  ·  MED %s", range = "LV %d-%d",
+        next = "NEXT IN CHAIN", rewards = "POSSIBLE REWARDS", showMap = "Show Start on Map", level = "Lv %d", zoneLevel = "LV AVG %s  ·  MED %s", range = "LV %d-%d",
         progress = "%d finished   -   %d unfinished", count = "%d/%d quests",
         other = "Other", eastern = "Eastern Kingdoms", kalimdor = "Kalimdor",
     },
     frFR = {
         search = "Rechercher une zone ou une quête...", zones = "Zones", quests = "Quêtes", map = "Carte",
-        unfinished = "Inachevées", completed = "Terminées", status_unfinished = "INACHEVÉE", status_completed = "TERMINÉE",
+        unfinished = "Inachevées", completed = "Terminées", status_unfinished = "INACHEVÉE", status_active = "DANS LE JOURNAL", status_completed = "TERMINÉE",
         locked = "VERROUILLÉE", questLevel = "Niveau %d  -  Niveau requis %d", giver = "Donneur de quête",
         starts = "Commence auprès de", item = "Objet de départ", unknown = "Départ de quête : inconnu",
         objective = "OBJECTIF", prerequisites = "PRÉREQUIS", none = "Aucun", any = "Terminez l'une de ces quêtes :",
-        next = "SUITE DE LA CHAÎNE", showMap = "Voir le départ sur la carte", level = "Niv. %d", zoneLevel = "NIV. MOY. %s  ·  MÉD. %s", range = "NIV. %d-%d",
+        next = "SUITE DE LA CHAÎNE", rewards = "RÉCOMPENSES POSSIBLES", showMap = "Voir le départ sur la carte", level = "Niv. %d", zoneLevel = "NIV. MOY. %s  ·  MÉD. %s", range = "NIV. %d-%d",
         progress = "%d terminées   -   %d inachevées", count = "%d/%d quêtes",
         other = "Autres", eastern = "Royaumes de l'Est", kalimdor = "Kalimdor",
     },
@@ -108,7 +117,8 @@ local function ZoneLevelText(stats)
     return string.format(L("zoneLevel"),LevelNumber(stats.meanLevel),LevelNumber(stats.medianLevel))
 end
 local function StatusText(questID)
-    local status = FQJ.GetQuestStatus(questID) == "completed" and "completed" or "unfinished"
+    local rawStatus = FQJ.GetQuestStatus(questID)
+    local status = rawStatus == "completed" and "completed" or (rawStatus == "active" and "active" or "unfinished")
     return status, L("status_" .. status), COLORS[status]
 end
 local function SearchText() return FQJ.Frame and FQJ.Frame.searchBox and (FQJ.Frame.searchBox:GetText() or ""):lower() or "" end
@@ -194,7 +204,7 @@ function FQJ.ShowZone(zoneKey)
     if zoneKey and FQJ.Zones[zoneKey] then activeZoneKey=zoneKey end
     selectedQuestID=nil; frame.home:Hide(); frame.zoneContent:Show(); frame.backButton:Show(); frame.prevZone:Show(); frame.nextZone:Show(); frame.searchBox:Show()
     for _,button in pairs(frame.filterButtons) do button:Show() end
-    local zone=ActiveZone(); frame.zoneTitle:SetText(ZoneName(zone)); local stats=ZoneStats(zone); frame.zoneMeta:SetText(ZoneLevelText(stats)); frame.zoneRange:SetText(string.format(L("range"),stats.minLevel,stats.maxLevel)); FQJ.Refresh()
+    local zone=ActiveZone(); local stats=ZoneStats(zone); frame.zoneTitle:SetText(ZoneName(zone).." ("..string.format(L("range"),stats.minLevel,stats.maxLevel)..")"); frame.zoneMeta:SetText(ZoneLevelText(stats)); frame.zoneRange:SetText(""); FQJ.Refresh()
 end
 
 local function NavigateZone(delta)
@@ -209,10 +219,48 @@ local function AddDetailBlock(parent,anchor,label,value,iconPath,valueColor)
     local block=CreateFrame("Frame",nil,parent,"BackdropTemplate"); block:SetWidth(parent:GetWidth()-4)
     block:SetBackdrop({bgFile="Interface\\Buttons\\WHITE8X8",edgeFile="Interface\\Tooltips\\UI-Tooltip-Border",edgeSize=10,insets={left=2,right=2,top=2,bottom=2}})
     block:SetBackdropColor(0.12,0.075,0.035,0.96); block:SetBackdropBorderColor(0.40,0.25,0.08,1)
-    local icon=block:CreateTexture(nil,"ARTWORK"); icon:SetSize(34,34); icon:SetPoint("TOPLEFT",8,-8); icon:SetTexture(iconPath); icon:SetTexCoord(0.08,0.92,0.08,0.92)
+    local icon=block:CreateTexture(nil,"ARTWORK"); icon:SetSize(34,34); icon:SetPoint("TOPLEFT",8,-8); icon:SetTexture(iconPath); icon:SetTexCoord(0,1,0,1)
     local heading=Font(block,12,{1.00,0.79,0.25}); heading:SetPoint("TOPLEFT",50,-8); heading:SetPoint("RIGHT",-8,0); heading:SetText(label)
     local body=Font(block,12,valueColor or {0.90,0.82,0.68}); body:SetPoint("TOPLEFT",50,-25); body:SetWidth(block:GetWidth()-60); body:SetWordWrap(true); body:SetText(value)
     block:SetHeight(math.max(50,33+(body:GetStringHeight() or 14)))
+    if anchor then block:SetPoint("TOPLEFT",anchor,"BOTTOMLEFT",0,-8) else block:SetPoint("TOPLEFT",0,0) end
+    return block
+end
+local function GetRewardIcon(itemID)
+    if C_Item and C_Item.GetItemIconByID then
+        local ok, icon = pcall(C_Item.GetItemIconByID,itemID)
+        if ok and icon then return icon end
+    end
+    if GetItemIcon then
+        local ok, icon = pcall(GetItemIcon,itemID)
+        if ok and icon then return icon end
+    end
+    if GetItemInfo then
+        local ok, icon = pcall(function() return select(10,GetItemInfo(itemID)) end)
+        if ok and icon then return icon end
+    end
+    return ICONS.rewards
+end
+local function AddRewardsBlock(parent,anchor,rewards)
+    local height=48+(#rewards*36)
+    local block=CreateFrame("Frame",nil,parent,"BackdropTemplate"); block:SetWidth(parent:GetWidth()-4); block:SetHeight(height)
+    block:SetBackdrop({bgFile="Interface\\Buttons\\WHITE8X8",edgeFile="Interface\\Tooltips\\UI-Tooltip-Border",edgeSize=10,insets={left=2,right=2,top=2,bottom=2}})
+    block:SetBackdropColor(0.12,0.075,0.035,0.96); block:SetBackdropBorderColor(0.40,0.25,0.08,1)
+    local icon=block:CreateTexture(nil,"ARTWORK"); icon:SetSize(34,34); icon:SetPoint("TOPLEFT",8,-8); icon:SetTexture(ICONS.rewards); icon:SetTexCoord(0,1,0,1)
+    local heading=Font(block,12,{1.00,0.79,0.25}); heading:SetPoint("TOPLEFT",50,-8); heading:SetPoint("RIGHT",-8,0); heading:SetText(L("rewards"))
+    for index,reward in ipairs(rewards) do
+        local item=CreateFrame("Button",nil,block,"BackdropTemplate"); item:SetHeight(31); item:SetPoint("TOPLEFT",50,-25-((index-1)*36)); item:SetPoint("RIGHT",-8,0)
+        item:SetBackdrop({bgFile="Interface\\Buttons\\WHITE8X8",edgeFile="Interface\\Buttons\\WHITE8X8",edgeSize=1}); item:SetBackdropColor(0.075,0.052,0.030,0.98); item:SetBackdropBorderColor(0.28,0.18,0.07,1)
+        local itemIcon=item:CreateTexture(nil,"ARTWORK"); itemIcon:SetSize(27,27); itemIcon:SetPoint("LEFT",2,0); itemIcon:SetTexture(GetRewardIcon(reward.id)); itemIcon:SetTexCoord(0.08,0.92,0.08,0.92)
+        local name=Font(item,11,{0.90,0.82,0.68}); name:SetPoint("LEFT",36,0); name:SetPoint("RIGHT",-6,0); name:SetText(Localized(reward,"name"))
+        item:SetScript("OnEnter",function(self)
+            self:SetBackdropBorderColor(0.72,0.50,0.14,1); GameTooltip:SetOwner(self,"ANCHOR_RIGHT")
+            local ok=reward.id and pcall(GameTooltip.SetHyperlink,GameTooltip,"item:"..reward.id)
+            if not ok then GameTooltip:SetText(Localized(reward,"name")) end
+            GameTooltip:Show()
+        end)
+        item:SetScript("OnLeave",function(self) self:SetBackdropBorderColor(0.28,0.18,0.07,1); GameTooltip:Hide() end)
+    end
     if anchor then block:SetPoint("TOPLEFT",anchor,"BOTTOMLEFT",0,-8) else block:SetPoint("TOPLEFT",0,0) end
     return block
 end
@@ -220,7 +268,7 @@ local function SelectQuest(questID)
     selectedQuestID=questID
     local zone,detail=ActiveZone(),FQJ.Frame.detail; local quest=zone and zone.quests[questID]; if not quest then return end
     detail.title:SetText(QuestName(quest)); detail.level:SetText(string.format(L("questLevel"),quest.level or 0,quest.requiredLevel or 0))
-    local _,label,color=StatusText(questID); detail.status:SetText(label); detail.status:SetTextColor(unpack(color))
+    local rawStatus=FQJ.GetQuestStatus(questID); local _,label,color=StatusText(questID); detail.status:SetText(label); detail.status:SetTextColor(unpack(color)); detail.questIcon:SetTexture(rawStatus=="active" and ICONS.active or ICONS.giver)
     for _,old in ipairs(detail.lines) do old:Hide() end; wipe(detail.lines)
     local anchor
     local function block(label,value,icon,color)
@@ -228,10 +276,10 @@ local function SelectQuest(questID)
     end
     if quest.start then
         local kind=quest.start.kind=="npc" and L("giver") or (quest.start.kind=="object" and L("starts") or L("item"))
-        block(kind,Localized(quest.start,"name"),"Interface\\GossipFrame\\AvailableQuestIcon")
-    else block(L("starts"),L("unknown"),"Interface\\GossipFrame\\AvailableQuestIcon") end
+        block(kind,Localized(quest.start,"name"),ICONS.giver)
+    else block(L("starts"),L("unknown"),ICONS.giver) end
     local objective=Localized(quest,"objective")
-    if objective~="" then block(L("objective"),objective,"Interface\\Icons\\INV_Misc_Note_01") end
+    if objective~="" then block(L("objective"),objective,ICONS.objective) end
     local all,any=quest.prerequisitesAll or {},quest.prerequisitesAny or {}; local prerequisiteLines={}
     for _,pre in ipairs(all) do local done=FQJ.IsCompleted(pre.id); table.insert(prerequisiteLines,(done and "|cFF45B854[done]|r " or "|cFFC88A65[ ]|r ")..Localized(pre,"name")) end
     if #any>0 then
@@ -239,8 +287,9 @@ local function SelectQuest(questID)
         for _,pre in ipairs(any) do local done=FQJ.IsCompleted(pre.id); table.insert(prerequisiteLines,(done and "|cFF45B854[done]|r " or "|cFFC88A65[ ]|r ")..Localized(pre,"name")) end
     end
     if #prerequisiteLines==0 then table.insert(prerequisiteLines,L("none")) end
-    block(L("prerequisites"),table.concat(prerequisiteLines,"\n"),"Interface\\Icons\\INV_Misc_Key_03")
-    if quest.nextQuest then block(L("next"),Localized(quest.nextQuest,"name"),"Interface\\Icons\\INV_Misc_ArrowRight") end
+    block(L("prerequisites"),table.concat(prerequisiteLines,"\n"),ICONS.prerequisites)
+    if quest.nextQuest then block(L("next"),Localized(quest.nextQuest,"name"),ICONS.next) end
+    if quest.rewards and #quest.rewards>0 then local item=AddRewardsBlock(detail.content,anchor,quest.rewards); table.insert(detail.lines,item); anchor=item end
     detail.mapButton:SetEnabled(quest.start and quest.start.x and quest.start.y); detail.mapButton:SetAlpha(detail.mapButton:IsEnabled() and 1 or 0.45)
     detail.scrollChild:SetHeight(math.max(460,anchor and (detail.scrollChild:GetTop()-anchor:GetBottom()+35) or 460)); detail.scrollFrame:SetVerticalScroll(0)
     for _,row in ipairs(rows) do
@@ -253,6 +302,7 @@ local function AcquireRow(parent,index)
     row.name=Font(row,12,{0.95,0.82,0.55}); row.name:SetPoint("TOPLEFT",10,-7); row.name:SetPoint("RIGHT",-48,0); row.name:SetWordWrap(false)
     row.level=Font(row,11,{0.72,0.62,0.42},"RIGHT"); row.level:SetPoint("TOPRIGHT",-8,-7)
     row.state=Font(row,9,{0.78,0.78,0.78}); row.state:SetPoint("BOTTOMLEFT",10,7)
+    row.activeIcon=row:CreateTexture(nil,"ARTWORK"); row.activeIcon:SetSize(16,16); row.activeIcon:SetPoint("BOTTOMRIGHT",-7,4); row.activeIcon:SetTexture(ICONS.active); row.activeIcon:SetTexCoord(0,1,0,1); row.activeIcon:Hide()
     row:SetScript("OnClick",function(self) SelectQuest(self.questID) end); row:SetScript("OnEnter",function(self) self:SetBackdropBorderColor(0.93,0.72,0.28,1) end); row:SetScript("OnLeave",function(self) self:SetBackdropBorderColor(0.42,0.29,0.12,1) end)
     rows[index]=row; return row
 end
@@ -270,7 +320,7 @@ function FQJ.Refresh()
     for index,quest in ipairs(visible) do
         local row=AcquireRow(FQJ.Frame.listChild,index); row.questID=quest.id; row.name:SetText(QuestName(quest)); row.level:SetText(string.format(L("level"),quest.level or 0))
         local rawStatus=FQJ.GetQuestStatus(quest.id); local _,label,color=StatusText(quest.id); local available=FQJ.ArePrerequisitesMet(quest) and UnitLevel("player")>=(quest.requiredLevel or 0)
-        row.state:SetText(label..((rawStatus~="completed" and not available) and "  -  "..L("locked") or "")); row.state:SetTextColor(unpack(color)); row:ClearAllPoints(); row:SetPoint("TOPLEFT",0,-(index-1)*47); row:Show()
+        row.state:SetText(label..((rawStatus~="completed" and not available) and "  -  "..L("locked") or "")); row.state:SetTextColor(unpack(color)); row.activeIcon:SetShown(rawStatus=="active"); row:ClearAllPoints(); row:SetPoint("TOPLEFT",0,-(index-1)*47); row:Show()
     end
     for index=#visible+1,#rows do rows[index]:Hide() end
     FQJ.Frame.listChild:SetHeight(math.max(480,#visible*47)); FQJ.Frame.progress:SetText(string.format(L("progress"),totals.completed,totals.active+totals.unstarted))
@@ -359,7 +409,7 @@ function FQJ.CreateUI()
 
     local detail=CreateFrame("Frame",nil,content,"BackdropTemplate"); detail:SetPoint("TOPLEFT",listPanel,"TOPRIGHT",12,0); detail:SetPoint("BOTTOMRIGHT",-14,14); Backdrop(detail); detail:SetBackdropColor(0.21,0.15,0.08,0.94); detail:SetBackdropBorderColor(0.42,0.27,0.10,1)
     local inset=CreateFrame("Frame",nil,detail,"BackdropTemplate"); inset:SetPoint("TOPLEFT",8,-8); inset:SetPoint("BOTTOMRIGHT",-14,8); inset:SetBackdrop({bgFile="Interface\\Buttons\\WHITE8X8",edgeFile="Interface\\Tooltips\\UI-Tooltip-Border",edgeSize=10,insets={left=3,right=3,top=3,bottom=3}}); inset:SetBackdropColor(0.19,0.13,0.07,0.98); inset:SetBackdropBorderColor(0.36,0.23,0.09,1)
-    local questIcon=inset:CreateTexture(nil,"ARTWORK"); questIcon:SetSize(42,42); questIcon:SetPoint("TOPLEFT",14,-12); questIcon:SetTexture("Interface\\GossipFrame\\AvailableQuestIcon")
+    local questIcon=inset:CreateTexture(nil,"ARTWORK"); questIcon:SetSize(42,42); questIcon:SetPoint("TOPLEFT",14,-12); questIcon:SetTexture(ICONS.giver); questIcon:SetTexCoord(0,1,0,1); detail.questIcon=questIcon
     detail.title=Font(inset,18,{1.00,0.80,0.28}); detail.title:SetPoint("TOPLEFT",66,-14); detail.title:SetPoint("RIGHT",-112,0); detail.title:SetShadowColor(0,0,0,0.9); detail.title:SetShadowOffset(1,-1)
     detail.level=Font(inset,11,{0.84,0.76,0.62}); detail.level:SetPoint("TOPLEFT",detail.title,"BOTTOMLEFT",0,-5); detail.status=Font(inset,10,{0.84,0.76,0.62},"RIGHT"); detail.status:SetPoint("TOPRIGHT",-16,-18)
     local divider=inset:CreateTexture(nil,"ARTWORK"); divider:SetColorTexture(0.49,0.31,0.10,0.9); divider:SetPoint("TOPLEFT",14,-66); divider:SetPoint("TOPRIGHT",-14,-66); divider:SetHeight(1)

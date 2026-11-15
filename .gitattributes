@@ -12,4 +12,5 @@ README.md export-ignore
 Data/Elwynn.lua export-ignore
 Media/Alliance.tga export-ignore
 Media/Parchment.tga export-ignore
+Media/Generated/ export-ignore
 
