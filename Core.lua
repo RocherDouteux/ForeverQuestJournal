@@ -2,7 +2,7 @@ local ADDON_NAME, FQJ = ...
 _G.ForeverQuestJournal_NS = FQJ
 
 FQJ.ADDON_NAME = ADDON_NAME
-FQJ.VERSION = "1.4.0"
+FQJ.VERSION = "1.4.1"
 FQJ.Zones = FQJ.Zones or {}
 FQJ.MEDIA = "Interface\\AddOns\\ForeverQuestJournal\\Media\\"
 FQJ.MAIN_FRAME_STRATA = "DIALOG"
@@ -15,7 +15,11 @@ eventFrame:RegisterEvent("QUEST_ACCEPTED")
 eventFrame:RegisterEvent("QUEST_TURNED_IN")
 eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
 
+local recentlyCompleted = {}
+local refreshSerial = 0
+
 local function IsCompleted(questID)
+    if recentlyCompleted[questID] then return true end
     if C_QuestLog and C_QuestLog.IsQuestFlaggedCompleted then
         return C_QuestLog.IsQuestFlaggedCompleted(questID) == true
     end
@@ -63,11 +67,42 @@ function FQJ.ArePrerequisitesMet(quest)
 end
 
 function FQJ.IsQuestRelevant(quest)
+    if quest.raceMask then
+        local _, _, raceID = UnitRace("player")
+        if raceID and raceID > 0 then
+            local raceBit = 2 ^ (raceID - 1)
+            if math.floor(quest.raceMask / raceBit) % 2 < 1 then return false end
+        end
+    end
     if not quest.classMask then return true end
     local _, _, classID = UnitClass("player")
     if not classID then return true end
     local classBit = 2 ^ (classID - 1)
     return math.floor(quest.classMask / classBit) % 2 >= 1
+end
+
+local function RefreshVisiblePage()
+    if not FQJ.Frame or not FQJ.Frame:IsShown() then return end
+    if FQJ.Frame.home and FQJ.Frame.home:IsShown() and FQJ.RefreshHome then
+        FQJ.RefreshHome()
+    elseif FQJ.Frame.zoneContent and FQJ.Frame.zoneContent:IsShown() and FQJ.Refresh then
+        FQJ.Refresh()
+    end
+end
+
+local function ScheduleQuestRefresh()
+    refreshSerial = refreshSerial + 1
+    local scheduledSerial = refreshSerial
+    local function RefreshIfCurrent()
+        if scheduledSerial == refreshSerial then RefreshVisiblePage() end
+    end
+    if C_Timer and C_Timer.After then
+        C_Timer.After(0, RefreshIfCurrent)
+        C_Timer.After(0.20, RefreshIfCurrent)
+        C_Timer.After(0.80, RefreshIfCurrent)
+    else
+        RefreshIfCurrent()
+    end
 end
 
 function FQJ.IsCompleted(questID)
@@ -144,7 +179,8 @@ eventFrame:SetScript("OnEvent", function(_, event, arg1)
         InstallJournalCoordination()
     elseif event == "ADDON_LOADED" and arg1 == "ForeverDungeonJournal" then
         InstallJournalCoordination()
-    elseif FQJ.Frame and FQJ.Frame:IsShown() and FQJ.Refresh then
-        FQJ.Refresh()
+    elseif event == "QUEST_LOG_UPDATE" or event == "QUEST_ACCEPTED" or event == "QUEST_TURNED_IN" or event == "PLAYER_LEVEL_UP" then
+        if event == "QUEST_TURNED_IN" and tonumber(arg1) then recentlyCompleted[tonumber(arg1)] = true end
+        ScheduleQuestRefresh()
     end
 end)

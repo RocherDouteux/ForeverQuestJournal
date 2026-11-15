@@ -9,6 +9,8 @@ to sit naturally beside Forever Dungeon Journal.
 - English and French interface and quest content.
 - Per-character Finished and Unfinished tracking.
 - A distinct in-quest-log marker for quests the current character has accepted.
+- Live status updates when quests are accepted, abandoned, or turned in.
+- Character race and faction filtering for the quest and zone totals.
 - Quest prerequisites and next-in-chain information.
 - Possible quest reward items with in-game item tooltips.
 - Quest giver, object, or starting-item information.
@@ -23,7 +25,7 @@ zones.
 
 ## Installation
 
-1. Download `ForeverQuestJournal-1.4.0.zip` from the latest release.
+1. Download `ForeverQuestJournal-1.4.1.zip` from the latest release.
 2. Extract it into your WoW Forever `Interface/AddOns` directory.
 3. Confirm that the final path is `Interface/AddOns/ForeverQuestJournal`.
 4. Restart the game or enter `/reload`.

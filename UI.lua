@@ -109,7 +109,10 @@ local function SortedZones()
     local result,averages = {},{}
     for _,zone in pairs(FQJ.Zones) do
         if zone.key and zone.quests and next(zone.quests) then
-            table.insert(result,zone); averages[zone]=ZoneStats(zone).meanLevel
+            local stats=ZoneStats(zone)
+            if stats.completed+stats.active+stats.unstarted>0 then
+                table.insert(result,zone); averages[zone]=stats.meanLevel
+            end
         end
     end
     table.sort(result,function(a,b)

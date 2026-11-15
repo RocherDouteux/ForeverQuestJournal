@@ -1,4 +1,4 @@
-Forever Quest Journal 1.4.0
+Forever Quest Journal 1.4.1
 
 Complete English/French zone browser for WoW Forever.
 
@@ -20,6 +20,8 @@ Features
   actions, with consistent hover, selected, pressed, and disabled states.
 - Per-character Finished and Unfinished states, with accepted quests clearly
   marked as "In Quest Log" inside the Unfinished view.
+- Quest states refresh live after quest-log changes and turn-ins.
+- Quest lists and zone totals respect the current character's race and faction.
 - Required quest chains and alternative prerequisites.
 - Possible item rewards with localized names and in-game item tooltips.
 - Quest-giver, object, and item start information.
