@@ -1,0 +1,52 @@
+Forever Quest Journal zone-card artwork
+Source collection: Wowpedia's World of Warcraft Classic zone infobox screenshots
+All images are cropped and resized uniformly to 512x256 for the journal cards.
+
+zone_14	Durotar	Durotar (Classic)	https://wowpedia.fandom.com/wiki/File:Durotar.jpg
+zone_215	Mulgore	Mulgore (Classic)	https://wowpedia.fandom.com/wiki/File:Mulgore.jpg
+zone_17	The Barrens	Barrens (Classic)	https://wowpedia.fandom.com/wiki/File:The_Barrens1.jpg
+zone_36	Alterac Mountains	Alterac Mountains (Classic)	https://wowpedia.fandom.com/wiki/File:Ruins_of_Alterac.jpg
+zone_45	Arathi Highlands	Arathi Highlands (Classic)	https://wowpedia.fandom.com/wiki/File:Circle_of_Outer_Binding-old.jpg
+zone_3	Badlands	Badlands (Classic)	https://wowpedia.fandom.com/wiki/File:Dustbowl.jpg
+zone_4	Blasted Lands	Blasted Lands (Classic)	https://wowpedia.fandom.com/wiki/File:Dp_blasted.png
+zone_85	Tirisfal Glades	Tirisfal Glades (Classic)	https://wowpedia.fandom.com/wiki/File:Tirisfal_Glades.jpg
+zone_130	Silverpine Forest	Silverpine Forest (Classic)	https://wowpedia.fandom.com/wiki/File:Skittering_Dark.jpg
+zone_28	Western Plaguelands	Western Plaguelands (Classic)	https://wowpedia.fandom.com/wiki/File:Western_Plaguelands_woods.jpg
+zone_139	Eastern Plaguelands	Eastern Plaguelands (Classic)	https://wowpedia.fandom.com/wiki/File:EasternPlaguelandsScenery.jpg
+zone_267	Hillsbrad Foothills	Hillsbrad Foothills (Classic)	https://wowpedia.fandom.com/wiki/File:Hillsbrad.jpg
+zone_47	The Hinterlands	Hinterlands (Classic)	https://wowpedia.fandom.com/wiki/File:Hinterlands.jpg
+zone_1	Dun Morogh	Dun Morogh (Classic)	https://wowpedia.fandom.com/wiki/File:Dun_Morogh.jpg
+zone_51	Searing Gorge	Searing Gorge (Classic)	https://wowpedia.fandom.com/wiki/File:Firewatch_Ridge.jpg
+zone_46	Burning Steppes	Burning Steppes (Classic)	https://wowpedia.fandom.com/wiki/File:Altar_of_Storms_(Burning_Steppes).jpg
+zone_12	Elwynn Forest	Elwynn Forest (Classic)	https://wowpedia.fandom.com/wiki/File:Elwynn_Forest.jpg
+zone_10	Duskwood	Duskwood (Classic)	https://wowpedia.fandom.com/wiki/File:Duskwood.jpg
+zone_38	Loch Modan	Loch Modan (Classic)	https://wowpedia.fandom.com/wiki/File:Loch_Modan.jpg
+zone_44	Redridge Mountains	Redridge Mountains (Classic)	https://wowpedia.fandom.com/wiki/File:Redridge_Mountains-old.jpg
+zone_33	Stranglethorn Vale	Stranglethorn Vale (Classic)	https://wowpedia.fandom.com/wiki/File:Stranglethorn_concept.jpg
+zone_8	Swamp of Sorrows	Swamp of Sorrows (Classic)	https://wowpedia.fandom.com/wiki/File:Swamp_of_Sorrows.jpg
+zone_40	Westfall	Westfall (Classic)	https://wowpedia.fandom.com/wiki/File:BlizzCon_2018_-_Classic_Westfall.jpg
+zone_11	Wetlands	Wetlands (Classic)	https://wowpedia.fandom.com/wiki/File:The_Green_Belt.jpg
+zone_141	Teldrassil	Teldrassil (Classic)	https://wowpedia.fandom.com/wiki/File:Teldrassil.jpg
+zone_148	Darkshore	Darkshore (Classic)	https://wowpedia.fandom.com/wiki/File:DarkshoreBeach.jpg
+zone_331	Ashenvale	Ashenvale (Classic)	https://wowpedia.fandom.com/wiki/File:Ashenvale.jpg
+zone_400	Thousand Needles	Thousand Needles (Classic)	https://wowpedia.fandom.com/wiki/File:The_Great_Lift.jpg
+zone_406	Stonetalon Mountains	Stonetalon Mountains (Classic)	https://wowpedia.fandom.com/wiki/File:Greatwood_Vale.jpg
+zone_405	Desolace	Desolace (Classic)	https://wowpedia.fandom.com/wiki/File:Desolace2.jpg
+zone_357	Feralas	Feralas (Classic)	https://wowpedia.fandom.com/wiki/File:High_Wilderness.jpg
+zone_15	Dustwallow Marsh	Dustwallow Marsh (Classic)	https://wowpedia.fandom.com/wiki/File:Bluefen.jpg
+zone_440	Tanaris	Tanaris (Classic)	https://wowpedia.fandom.com/wiki/File:Tanaris.jpg
+zone_16	Azshara	Azshara (Classic)	https://wowpedia.fandom.com/wiki/File:Shadowsong_Shrine.jpg
+zone_361	Felwood	Felwood (Classic)	https://wowpedia.fandom.com/wiki/File:Bloodvenom_River.jpg
+zone_490	Un'Goro Crater	Un'Goro Crater (Classic)	https://wowpedia.fandom.com/wiki/File:Un%27Goro_Crater.jpg
+zone_493	Moonglade	Moonglade	https://wowpedia.fandom.com/wiki/File:Moonglade.jpg
+zone_1377	Silithus	Silithus (Classic)	https://wowpedia.fandom.com/wiki/File:Silithus.jpg
+zone_618	Winterspring	Winterspring (Classic)	https://wowpedia.fandom.com/wiki/File:Winterspring.jpg
+zone_1519	Stormwind City	Stormwind City	https://wowpedia.fandom.com/wiki/File:OverviewStormwind.JPG
+zone_1637	Orgrimmar	Orgrimmar	https://wowpedia.fandom.com/wiki/File:Orgrimmar_old.jpg
+zone_1537	Ironforge	Ironforge	https://wowpedia.fandom.com/wiki/File:Ironforge.jpg
+zone_1638	Thunder Bluff	Thunder Bluff	https://wowpedia.fandom.com/wiki/File:Thunder_Bluff_in_the_distance.jpg
+zone_1657	Darnassus	Darnassus	https://wowpedia.fandom.com/wiki/File:Gates_of_Darnassus.jpg
+zone_1497	Undercity	Undercity	https://wowpedia.fandom.com/wiki/File:Undercity.jpg
+zone_2597	Alterac Valley	Alterac Valley	https://wowpedia.fandom.com/wiki/File:Alteracvalley.jpg
+zone_3277	Warsong Gulch	Warsong Gulch	https://wowpedia.fandom.com/wiki/File:Warsong-gulch.jpg
+zone_3358	Arathi Basin	Arathi Basin	https://wowpedia.fandom.com/wiki/File:Arathi_Basin_cave_entrance_Alliance.jpg
