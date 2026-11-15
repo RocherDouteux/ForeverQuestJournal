@@ -5,6 +5,8 @@ FQJ.ADDON_NAME = ADDON_NAME
 FQJ.VERSION = "1.4.0"
 FQJ.Zones = FQJ.Zones or {}
 FQJ.MEDIA = "Interface\\AddOns\\ForeverQuestJournal\\Media\\"
+FQJ.MAIN_FRAME_STRATA = "DIALOG"
+FQJ.MAIN_FRAME_LEVEL = 20
 
 local eventFrame = CreateFrame("Frame")
 eventFrame:RegisterEvent("ADDON_LOADED")
@@ -74,9 +76,20 @@ end
 
 function FQJ.BringToFront()
     if not FQJ.Frame then return end
-    FQJ.Frame:SetFrameStrata("TOOLTIP")
-    FQJ.Frame:SetFrameLevel(100)
+    FQJ.Frame:SetFrameStrata(FQJ.MAIN_FRAME_STRATA)
+    FQJ.Frame:SetFrameLevel(FQJ.MAIN_FRAME_LEVEL)
+    if FQJ.Frame.languageMenu then
+        FQJ.Frame.languageMenu:SetFrameStrata(FQJ.MAIN_FRAME_STRATA)
+        FQJ.Frame.languageMenu:SetFrameLevel(FQJ.MAIN_FRAME_LEVEL + 100)
+    end
     FQJ.Frame:Raise()
+end
+
+function FQJ.YieldToNewWindow()
+    if not FQJ.Frame or not FQJ.Frame:IsShown() then return end
+    if FQJ.Frame.languageMenu then FQJ.Frame.languageMenu:Hide() end
+    FQJ.Frame:SetFrameStrata("MEDIUM")
+    FQJ.Frame:SetFrameLevel(10)
 end
 
 function FQJ.Toggle()
@@ -88,7 +101,7 @@ function FQJ.Toggle()
         return
     end
     if FQJ.Frame:IsShown() then
-        if FQJ.Frame:GetFrameStrata() ~= "TOOLTIP" then FQJ.BringToFront()
+        if FQJ.Frame:GetFrameStrata() ~= FQJ.MAIN_FRAME_STRATA or FQJ.Frame:GetFrameLevel() < FQJ.MAIN_FRAME_LEVEL then FQJ.BringToFront()
         else FQJ.Frame:Hide() end
     else
         FQJ.Frame:Show()
@@ -104,8 +117,7 @@ local function InstallJournalCoordination()
     dungeonJournal.FQJCoordinationHooked = true
     dungeonJournal:HookScript("OnShow", function()
         if FQJ.Frame and FQJ.Frame:IsShown() then
-            FQJ.Frame:SetFrameStrata("MEDIUM")
-            FQJ.Frame:SetFrameLevel(10)
+            FQJ.YieldToNewWindow()
         end
     end)
 end

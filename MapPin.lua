@@ -24,6 +24,7 @@ function FQJ.ShowQuestStartOnMap(quest, zone)
         end
     end
 
+    if FQJ.YieldToNewWindow then FQJ.YieldToNewWindow() end
     if C_Map and C_Map.OpenWorldMap then
         C_Map.OpenWorldMap(uiMapID)
     elseif ToggleWorldMap then
