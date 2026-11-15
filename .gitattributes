@@ -4,3 +4,12 @@
 *.md text eol=lf
 *.tga binary
 
+# Keep the downloadable addon archive install-ready. These remain in the
+# source repository but are not runtime files used by the current TOC/UI.
+.gitattributes export-ignore
+.gitignore export-ignore
+README.md export-ignore
+Data/Elwynn.lua export-ignore
+Media/Alliance.tga export-ignore
+Media/Parchment.tga export-ignore
+
