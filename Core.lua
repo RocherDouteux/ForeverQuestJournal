@@ -2,7 +2,7 @@ local ADDON_NAME, FQJ = ...
 _G.ForeverQuestJournal_NS = FQJ
 
 FQJ.ADDON_NAME = ADDON_NAME
-FQJ.VERSION = "1.4.1"
+FQJ.VERSION = "1.4.2"
 FQJ.Zones = FQJ.Zones or {}
 FQJ.MEDIA = "Interface\\AddOns\\ForeverQuestJournal\\Media\\"
 FQJ.MAIN_FRAME_STRATA = "DIALOG"
@@ -82,6 +82,7 @@ function FQJ.IsQuestRelevant(quest)
 end
 
 local function RefreshVisiblePage()
+    if FQJ.MarkZonePinsDirty then FQJ.MarkZonePinsDirty() end
     if not FQJ.Frame or not FQJ.Frame:IsShown() then return end
     if FQJ.Frame.home and FQJ.Frame.home:IsShown() and FQJ.RefreshHome then
         FQJ.RefreshHome()
@@ -176,6 +177,7 @@ eventFrame:SetScript("OnEvent", function(_, event, arg1)
         FQJ.DB = ForeverQuestJournalCharacterDB
         FQJ.DB.filter = FQJ.DB.filter == "completed" and "completed" or "unfinished"
         FQJ.DB.language = FQJ.DB.language or "enUS"
+        if FQJ.DB.showMapQuestPins == nil then FQJ.DB.showMapQuestPins = true end
         InstallJournalCoordination()
     elseif event == "ADDON_LOADED" and arg1 == "ForeverDungeonJournal" then
         InstallJournalCoordination()

@@ -1,4 +1,4 @@
-Forever Quest Journal 1.4.1
+Forever Quest Journal 1.4.2
 
 Complete English/French zone browser for WoW Forever.
 
@@ -29,6 +29,10 @@ Features
   quests.
 - "Show Start on Map" creates a user waypoint in the quest's actual starting
   zone whenever a coordinate is known.
+- Opening a zone map displays every currently available quest start, grouping
+  quests that share the same giver or location into one readable marker.
+- A world-map toggle hides or restores all available-quest markers and remembers
+  the setting for each character.
 - Forever Quest Journal and Dungeon Journal can remain open together; the
   most recently opened journal is shown intact above the other.
 

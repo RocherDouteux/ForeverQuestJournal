@@ -15,6 +15,8 @@ to sit naturally beside Forever Dungeon Journal.
 - Possible quest reward items with in-game item tooltips.
 - Quest giver, object, or starting-item information.
 - Place a waypoint for a quest's starting location.
+- Show every currently available quest start on the zone map, grouped by shared location.
+- Toggle available-quest map markers on or off per character.
 - Search zones and quest names.
 - Mean, median, and minimum–maximum quest-level summaries for each zone.
 - Previous/next zone navigation and a draggable minimap launcher.
@@ -25,7 +27,7 @@ zones.
 
 ## Installation
 
-1. Download `ForeverQuestJournal-1.4.1.zip` from the latest release.
+1. Download `ForeverQuestJournal-1.4.2.zip` from the latest release.
 2. Extract it into your WoW Forever `Interface/AddOns` directory.
 3. Confirm that the final path is `Interface/AddOns/ForeverQuestJournal`.
 4. Restart the game or enter `/reload`.

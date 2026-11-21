@@ -345,6 +345,7 @@ local function CreateFilter(parent,filter,x)
 end
 local function ApplyLanguage()
     local frame=FQJ.Frame; if not frame then return end
+    if FQJ.MarkZonePinsDirty then FQJ.MarkZonePinsDirty() end
     if frame.languageMenu then frame.languageMenu:Hide() end
     local activeLanguage=Language(); frame.languageText:SetText(activeLanguage=="frFR" and "Français" or "English"); frame.languageCode:SetText(activeLanguage=="frFR" and "FR" or "EN")
     if frame.languageOptions then
@@ -408,7 +409,7 @@ function FQJ.CreateUI()
     local mapBadge=CreateFrame("Frame",nil,frame.mapTab,"BackdropTemplate"); mapBadge:SetSize(28,20); mapBadge:SetPoint("LEFT",5,0); mapBadge:SetBackdrop({bgFile="Interface\\Buttons\\WHITE8X8",edgeFile="Interface\\Buttons\\WHITE8X8",edgeSize=1}); mapBadge:SetBackdropColor(0.20,0.145,0.055,1); mapBadge:SetBackdropBorderColor(0.58,0.41,0.13,1)
     local mapIcon=mapBadge:CreateTexture(nil,"OVERLAY"); mapIcon:SetSize(19,19); mapIcon:SetPoint("CENTER",0,0); mapIcon:SetTexture(ICONS.map); mapIcon:SetTexCoord(0,1,0,1)
     frame.mapTab.label:ClearAllPoints(); frame.mapTab.label:SetPoint("CENTER",13,0)
-    frame.mapTab:SetScript("OnClick",function() local zone=ActiveZone(); if FQJ.YieldToNewWindow then FQJ.YieldToNewWindow() end; if C_Map and C_Map.OpenWorldMap then C_Map.OpenWorldMap(zone.uiMapID) elseif ToggleWorldMap then ToggleWorldMap() end end)
+    frame.mapTab:SetScript("OnClick",function() local zone=ActiveZone(); if FQJ.ShowZoneQuestPins then FQJ.ShowZoneQuestPins() end; if FQJ.YieldToNewWindow then FQJ.YieldToNewWindow() end; if C_Map and C_Map.OpenWorldMap then C_Map.OpenWorldMap(zone.uiMapID) elseif ToggleWorldMap then ToggleWorldMap() end end)
     local listPanel=CreateFrame("Frame",nil,content,"BackdropTemplate"); listPanel:SetPoint("TOPLEFT",14,-84); listPanel:SetPoint("BOTTOMLEFT",14,14); listPanel:SetWidth(344); Backdrop(listPanel); listPanel:SetBackdropColor(0.19,0.13,0.07,0.94); listPanel:SetBackdropBorderColor(0.39,0.24,0.08,1)
     frame.listTitle=Font(listPanel,16,{1,0.82,0.27}); frame.listTitle:SetPoint("TOPLEFT",12,-10)
     frame.filterButtons={}; CreateFilter(frame,"unfinished",10); CreateFilter(frame,"completed",162)
