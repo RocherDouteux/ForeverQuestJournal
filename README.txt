@@ -1,4 +1,4 @@
-Forever Quest Journal 1.4.2
+Forever Quest Journal 1.5.0
 
 Complete English/French zone browser for WoW Forever.
 
@@ -6,20 +6,21 @@ Open with /fqj, /questjournal, the AddOn Compartment, or the draggable
 minimap button.
 
 Features
-- DungeonJournal-inspired zone cards ordered by average quest level and a
-  selected-zone page hierarchy.
+- DungeonJournal-inspired zone cards ordered by average quest level.
 - Searchable two-column browser for every populated outdoor and city zone.
-- Search remains available inside a zone and filters that zone's quests.
+- Pan and zoom the quest tree to explore branches and standalone quests.
+- Search highlights matching nodes. Press Enter to cycle through results.
+- Cross-zone quest links open the destination tree. Back restores the
+  previous view. Click the zone name to return to the gallery.
+- Quest details open in a draggable panel that grows with its content.
 - Zone-level summaries use the mean and median relevant quest levels instead
   of relying only on minimum/maximum outliers, rounded to whole levels. The
-  traditional range remains visible as a right-aligned secondary value.
+  traditional range appears beside the zone name.
 - English and French interface, quest names, objectives, quest givers,
   prerequisites, and chain links.
 - Compact flat language selector with clear English/French menu rows.
-- Unified flat button styling for zone navigation, tabs, filters, and map
-  actions, with consistent hover, selected, pressed, and disabled states.
-- Per-character Finished and Unfinished states, with accepted quests clearly
-  marked as "In Quest Log" inside the Unfinished view.
+- Per-character quest states appear as colored rings, with checkmarks on
+  finished quests and a legend beneath the tree.
 - Quest states refresh live after quest-log changes and turn-ins.
 - Quest lists and zone totals respect the current character's race and faction.
 - Required quest chains and alternative prerequisites.

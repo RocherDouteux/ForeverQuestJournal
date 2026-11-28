@@ -2,7 +2,7 @@
 ## Title: Forever Quest Journal
 ## Notes: A clean zone-by-zone quest journal for WoW Forever.
 ## Author: Frederick
-## Version: 1.4.2
+## Version: 1.5.0
 ## IconTexture: Interface\Icons\INV_Misc_Book_09
 ## SavedVariablesPerCharacter: ForeverQuestJournalCharacterDB
 ## AddonCompartmentFunc: ForeverQuestJournal_OnAddonCompartmentClick
@@ -12,6 +12,7 @@
 Core.lua
 Data\Zones.lua
 Data\ZoneArt.lua
+QuestTree.lua
 MapPin.lua
 UI.lua
 Minimap.lua

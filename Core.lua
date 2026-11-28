@@ -2,7 +2,7 @@ local ADDON_NAME, FQJ = ...
 _G.ForeverQuestJournal_NS = FQJ
 
 FQJ.ADDON_NAME = ADDON_NAME
-FQJ.VERSION = "1.4.2"
+FQJ.VERSION = "1.5.0"
 FQJ.Zones = FQJ.Zones or {}
 FQJ.MEDIA = "Interface\\AddOns\\ForeverQuestJournal\\Media\\"
 FQJ.MAIN_FRAME_STRATA = "DIALOG"
@@ -173,9 +173,8 @@ function ForeverQuestJournal_OnAddonCompartmentLeave() GameTooltip:Hide() end
 
 eventFrame:SetScript("OnEvent", function(_, event, arg1)
     if event == "ADDON_LOADED" and arg1 == ADDON_NAME then
-        ForeverQuestJournalCharacterDB = ForeverQuestJournalCharacterDB or { filter = "all", language = "enUS" }
+        ForeverQuestJournalCharacterDB = ForeverQuestJournalCharacterDB or { language = "enUS" }
         FQJ.DB = ForeverQuestJournalCharacterDB
-        FQJ.DB.filter = FQJ.DB.filter == "completed" and "completed" or "unfinished"
         FQJ.DB.language = FQJ.DB.language or "enUS"
         if FQJ.DB.showMapQuestPins == nil then FQJ.DB.showMapQuestPins = true end
         InstallJournalCoordination()

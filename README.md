@@ -11,15 +11,17 @@ to sit naturally beside Forever Dungeon Journal.
 - A distinct in-quest-log marker for quests the current character has accepted.
 - Live status updates when quests are accepted, abandoned, or turned in.
 - Character race and faction filtering for the quest and zone totals.
-- Quest prerequisites and next-in-chain information.
+- Interactive quest trees with pan, zoom, branching prerequisites, and cross-zone links.
+- Back navigation restores the previous zone and canvas position.
+- Draggable quest details with clickable prerequisites and previous and next steps.
 - Possible quest reward items with in-game item tooltips.
 - Quest giver, object, or starting-item information.
 - Place a waypoint for a quest's starting location.
 - Show every currently available quest start on the zone map, grouped by shared location.
 - Toggle available-quest map markers on or off per character.
-- Search zones and quest names.
+- Search zones and highlight quest matches on the canvas. Press Enter to cycle through matches.
 - Mean, median, and minimum–maximum quest-level summaries for each zone.
-- Previous/next zone navigation and a draggable minimap launcher.
+- Click the zone name to return to the gallery. Open the journal with the draggable minimap launcher.
 - Can remain open alongside Forever Dungeon Journal.
 
 The bundled database currently contains 3,977 quests across 48 populated
@@ -27,7 +29,7 @@ zones.
 
 ## Installation
 
-1. Download `ForeverQuestJournal-1.4.2.zip` from the latest release.
+1. Download `ForeverQuestJournal-1.5.0.zip` from the latest release.
 2. Extract it into your WoW Forever `Interface/AddOns` directory.
 3. Confirm that the final path is `Interface/AddOns/ForeverQuestJournal`.
 4. Restart the game or enter `/reload`.
